@@ -1,0 +1,13 @@
+{
+	"scripts": {
+		"clean": "rimraf ./build",
+		"build": "npm run clean && tsc",
+		"start": "node build/app.js",
+		"local": "ts-node app/app.ts",
+		"watch": "nodemon"
+	},
+	"devDependencies": {
+		"nodemon": "^2.0.22",
+		"ts-node": "^10.9.1"
+	}
+}
