@@ -33,7 +33,7 @@ async function main() {
 	spacer("=");
 }
 // ---------------------------------------------------------
-//               SERVER_SHUTDOWN/CATCH_ERRORS
+//                  CALL_MAIN/CATCH_ERRORS
 // ---------------------------------------------------------
 
 main().catch((err: unknown): void => {
