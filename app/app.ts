@@ -36,14 +36,6 @@ async function main() {
 //               SERVER_SHUTDOWN/CATCH_ERRORS
 // ---------------------------------------------------------
 
-// Adding a graceful shutdown
-GRACEFUL_SIG_SHUTDOWN.forEach((signal: string) => {
-	process.on(signal, async () => {
-		await fastify.close();
-		process.exit(0);
-	});
-});
-
 main().catch((err: unknown): void => {
 	if (err instanceof Error)
 		console.error('Failed to start server:', err.message);
