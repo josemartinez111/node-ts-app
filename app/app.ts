@@ -1,48 +1,58 @@
 // FILE: app/app.ts
 // _______________________________________________
 
-import { fastify, FastifyReply, FastifyRequest } from "fastify";
-// _______________________________________________
+import { FastifyReply, FastifyRequest } from "fastify";
+import { createServer } from "./server/createServer";
+import { setupGracefulShutdown } from "./server/serverShutdown";
+// ---------------------------------------------------------
+//                      HTTP-SERVER
+// ---------------------------------------------------------
 
-/** --------------------------------------------------------- */
-/**                      HTTP-SERVER                          */
-/** --------------------------------------------------------- */
+const { fastify, LISTEN_OPTS, GRACEFUL_SIG_SHUTDOWN } = createServer();
 
-const fast = fastify();
-fast.get("/", async (_request: FastifyRequest, _reply: FastifyReply) => {
-	return {
-		key: "Hola",
-		metedata: {
-			value: "mundo",
-			status: "200-OK",
-		}
-	};
+const healthcheckEndpoint = async (_request: FastifyRequest, _reply: FastifyReply) => ({
+	key: "Hola",
+	metedata: {
+		value: "mundo",
+		statuscode: "200-OK",
+	},
 });
 
-const optsPort = { port: 8080 };
+fastify.get("/", healthcheckEndpoint);
+// ----------------------------------------------------------
+//                      MAIN_FUNCTION
+// ----------------------------------------------------------
 
-fast.listen(optsPort, () => {
-	console.log(`Server is running on: http://localhost:${ optsPort.port }`);
-});
-/** --------------------------------------------------------- */
-/**                MAIN_FUNCTION_FOR_CONSOLE_APP              */
-/** --------------------------------------------------------- */
-
-
-const main = () => {
+async function main() {
 	spacer("=");
 	// __________________________________________________________
 	
-	console.log("\n");
-	console.log("Hola mundo!");
+	await fastify.listen(LISTEN_OPTS);
+	setupGracefulShutdown(fastify, GRACEFUL_SIG_SHUTDOWN);
 	// __________________________________________________________
 	spacer("=");
-};
+}
+// ---------------------------------------------------------
+//               SERVER_SHUTDOWN/CATCH_ERRORS
+// ---------------------------------------------------------
 
-main();
-/** --------------------------------------------------------- */
-/**                      CODE_SANDBOX                         */
-/** --------------------------------------------------------- */
+// Adding a graceful shutdown
+GRACEFUL_SIG_SHUTDOWN.forEach((signal: string) => {
+	process.on(signal, async () => {
+		await fastify.close();
+		process.exit(0);
+	});
+});
+
+main().catch((err: unknown): void => {
+	if (err instanceof Error)
+		console.error('Failed to start server:', err.message);
+	// Re-throw the error for further handling
+	throw err;
+});
+//  ---------------------------------------------------------
+//                        CODE_SANDBOX
+//  ---------------------------------------------------------
 
 function spacer(char: string = "_", lengthOfChar: number = 55) {
 	return char.repeat(lengthOfChar);
