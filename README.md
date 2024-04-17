@@ -4,6 +4,14 @@
 ```powershell
 npm i && npm update
 ```
+#### Make sure to the `.git/` folder so like that you can start your own git setup:
+```powershell
+# MacOS
+rm -rf .git
+
+# Windows
+rmdir /s /q .git
+```
 
 ### Dependencies
 
