@@ -1,11 +1,14 @@
 // ---------------------------------------------------------
-//                  server/createServer.ts
+//                  server/UseCreateServer.ts
 // ---------------------------------------------------------
 
 import { FastifyInstance } from "fastify";
 // ---------------------------------------------------------
 
-export function setupGracefulShutdown(fastify: FastifyInstance, signals: Array<string>): void {
+export function serverGracefulShutdown(fastify: FastifyInstance,
+	signals: Array<string>): void {
+	
+	// Handling shutdown signals
 	signals.forEach((signal: string) => {
 		process.on(signal, async () => {
 			console.log(`Received ${signal}, closing server...`);
