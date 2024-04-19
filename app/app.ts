@@ -1,22 +1,15 @@
-// FILE: app/app.ts
-// _______________________________________________
+// ---------------------------------------------------------
+//                       app/app.ts
+// ---------------------------------------------------------
 
-import { UseCreateServer } from "./server/UseCreateServer";
-import { serverGracefulShutdown } from "./server/serverGracefulShutdown";
+import { runFastify } from "./runFastify";
 // ----------------------------------------------------------
 //                      MAIN_FUNCTION
 // ----------------------------------------------------------
 
 async function main() {
 	
-	const {
-		fastify,
-		LISTEN_OPTS,
-		GRACEFUL_SIG_SHUTDOWN,
-	} = await UseCreateServer();
-	
-	await fastify.listen(LISTEN_OPTS);
-	serverGracefulShutdown(fastify, GRACEFUL_SIG_SHUTDOWN);
+	await runFastify();
 }
 // ---------------------------------------------------------
 //                    CALL_MAIN/CATCH_ERRORS
