@@ -3,8 +3,8 @@
 // ---------------------------------------------------------
 
 import { FastifyReply } from "fastify";
-import { HealthcheckRequest } from "../../common/types/requestType";
-import { HealthcheckResponse } from "../../common/types/responseType";
+import { HealthcheckRequest } from "../../common/types/requestTypes";
+import { HealthcheckResponse } from "../../common/types/responseTypes";
 // ---------------------------------------------------------
 
 export async function UseEndPoints() {
