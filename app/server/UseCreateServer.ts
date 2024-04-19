@@ -12,6 +12,7 @@ interface CreateServerOptions {
 	LISTEN_OPTS: FastifyListenOptions;
 	GRACEFUL_SIG_SHUTDOWN: Array<string>;
 }
+
 // ---------------------------------------------------------
 
 export async function UseCreateServer(): Promise<CreateServerOptions> {
@@ -31,12 +32,19 @@ export async function UseCreateServer(): Promise<CreateServerOptions> {
 		https: {
 			key: key,
 			cert: cert,
-		}
+		},
 	});
+	
+	// `<string>`: Using type assertion to convert to a number
+	const port = parseInt(process.env.PORT as string, 10);
+	
+	if (isNaN(port)) {
+		throw new Error(`port is not a number`);
+	}
 	
 	// Defining port and host options
 	const LISTEN_OPTS: FastifyListenOptions = {
-		port: 8080,
+		port: port,
 		host: "localhost",
 	};
 	

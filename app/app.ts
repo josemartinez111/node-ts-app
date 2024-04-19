@@ -3,9 +3,14 @@
 // ---------------------------------------------------------
 
 import { runFastify } from "./runFastify";
+import dotenv from 'dotenv';
 // ----------------------------------------------------------
 //                      MAIN_FUNCTION
 // ----------------------------------------------------------
+
+// Load environment variables from .env file
+dotenv.config();
+// ---------------------------------------------------------
 
 async function main() {
 	
